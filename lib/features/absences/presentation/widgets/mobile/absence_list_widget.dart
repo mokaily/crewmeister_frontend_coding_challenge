@@ -1,9 +1,9 @@
-import 'package:crewmeister_frontend_coding_challenge/features/absences/presentation/widgets/absence_list_item_widget.dart';
+import 'package:crewmeister_frontend_coding_challenge/features/absences/presentation/widgets/mobile/absence_list_item_widget.dart';
 import 'package:flutter/material.dart';
-import '../../domain/entities/member.dart';
+import '../../../domain/entities/member.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/absences_bloc.dart';
+import '../../bloc/absences_bloc.dart';
 import 'absence_list_item_widget.dart';
 
 class AbsenceList extends StatelessWidget {

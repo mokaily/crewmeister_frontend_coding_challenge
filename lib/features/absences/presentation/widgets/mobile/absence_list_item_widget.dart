@@ -1,11 +1,12 @@
 import 'package:crewmeister_frontend_coding_challenge/core/utils/formates/date_formates.dart';
+import 'package:crewmeister_frontend_coding_challenge/core/widgets/chips/abcense_status_chip_widget.dart';
+import 'package:crewmeister_frontend_coding_challenge/core/widgets/chips/abcense_type_chip_widget.dart';
+import 'package:crewmeister_frontend_coding_challenge/core/widgets/member_circle_avatar.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/entities/absence.dart';
-import '../../domain/entities/member.dart';
-import 'chips/abcense_status_chip_widget.dart';
-import 'chips/abcense_type_chip_widget.dart';
-import 'notes_widget.dart';
+import '../../../domain/entities/absence.dart';
+import '../../../domain/entities/member.dart';
+import '../../../../../core/widgets/notes_widget.dart';
 
 class AbsenceListItem extends StatelessWidget {
   final Absence absence;
@@ -21,7 +22,7 @@ class AbsenceListItem extends StatelessWidget {
     final dateRange = '$startDate - $endDate   ($duration days)';
 
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       padding: const EdgeInsets.only(top: 16, right: 16, left: 16),
       decoration: BoxDecoration(
         color: Theme.of(context).brightness == Brightness.dark ? Color(0xFF1e2936) : Colors.white,
@@ -42,26 +43,29 @@ class AbsenceListItem extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  CircleAvatar(backgroundImage: NetworkImage(member!.image), radius: 20),
+                  MemberCircleAvatar(link: member!.image, index: member!.userId),
                   const SizedBox(width: 12),
-                  Text(member!.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(member!.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                      SizedBox(height: 8),
+                      Text(dateRange, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                    ],
+                  ),
                 ],
               ),
-              AbsenceStatusChipWidget(type: absence.status),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  AbsenceTypeChipWidget(type: absence.type),
+                  SizedBox(height: 8),
+                  AbsenceStatusChipWidget(type: absence.status),
+                ],
+              )
             ],
           ),
           const SizedBox(height: 12),
-          // Absence type + dates
-          Row(
-            children: [
-              AbsenceTypeChipWidget(type: absence.type),
-              const SizedBox(width: 8),
-              Container(width: 1, height: 12, color: Colors.grey[300]),
-              const SizedBox(width: 8),
-              Text(dateRange, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
-            ],
-          ),
-          const SizedBox(height: 8),
           // Member note
           if (absence.memberNote.isNotEmpty) ...[NotesWidget(isMemberNote: true, note: absence.memberNote)],
           if (absence.admitterNote != null && absence.admitterNote!.isNotEmpty) ...[
