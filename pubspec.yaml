@@ -12,6 +12,17 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.8
+  intl: ^0.20.2
+  provider: ^6.1.5+1
+  equatable: ^2.0.8
+  flutter_bloc: ^9.1.1
+  #Service Locator
+  get_it: ^8.0.3
+  # File download for web
+  universal_html: ^2.2.4
+  # File operations for mobile
+  path_provider: ^2.1.4
+  share_plus: ^10.1.2
 
 dev_dependencies:
   test: ^1.25.4
