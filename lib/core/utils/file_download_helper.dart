@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:open_filex/open_filex.dart';
 
 class FileDownloadHelper {
   /// Downloads or shares a file depending on the platform
@@ -16,8 +17,14 @@ class FileDownloadHelper {
       // Web platform - direct download
       _downloadFileWeb(content, fileName, mimeType);
     } else {
-      // Mobile/Desktop - save and share
-      await _saveAndShareFile(content, fileName, mimeType);
+      // Check if Android on non-web platforms
+      if (!kIsWeb && Platform.isAndroid) {
+        // Android - save to Downloads folder
+        await _saveToDownloadsAndroid(content, fileName);
+      } else {
+        // iOS/Desktop - save and open in calendar app
+        await _saveAndOpenFile(content, fileName, mimeType);
+      }
     }
   }
 
@@ -36,8 +43,58 @@ class FileDownloadHelper {
     html.Url.revokeObjectUrl(url);
   }
 
-  /// Saves file to temporary directory and shares it on mobile/desktop
-  static Future<void> _saveAndShareFile(
+  /// Saves file to Downloads folder on Android
+  static Future<void> _saveToDownloadsAndroid(
+    String content,
+    String fileName,
+  ) async {
+    try {
+      // Get the Downloads directory
+      Directory? downloadsDir;
+
+      // Try to get external storage directory (Downloads)
+      final externalDir = await getExternalStorageDirectory();
+      if (externalDir != null) {
+        // Navigate to Downloads folder
+        // External storage path is usually: /storage/emulated/0/Android/data/package/files
+        // We want: /storage/emulated/0/Download
+        final pathParts = externalDir.path.split('/');
+        final basePath = pathParts
+            .sublist(0, 4)
+            .join('/'); // /storage/emulated/0
+        downloadsDir = Directory('$basePath/Download');
+
+        // Create Downloads directory if it doesn't exist
+        if (!await downloadsDir.exists()) {
+          downloadsDir = Directory('$basePath/Downloads');
+          if (!await downloadsDir.exists()) {
+            // Fallback to app's external directory
+            downloadsDir = externalDir;
+          }
+        }
+      }
+
+      if (downloadsDir == null) {
+        // Fallback to iOS method if we can't access Downloads
+        await _saveAndOpenFile(content, fileName, 'text/calendar');
+        return;
+      }
+
+      // Write file to Downloads
+      final filePath = '${downloadsDir.path}/$fileName';
+      final file = File(filePath);
+      await file.writeAsString(content, encoding: utf8);
+
+      // Open file with default calendar app (Outlook, Google Calendar, etc.)
+      await OpenFilex.open(filePath, type: 'text/calendar');
+    } catch (e) {
+      // Fallback to iOS method if saving fails
+      await _saveAndOpenFile(content, fileName, 'text/calendar');
+    }
+  }
+
+  /// Saves file and opens it with default calendar app on iOS/Desktop
+  static Future<void> _saveAndOpenFile(
     String content,
     String fileName,
     String mimeType,
@@ -51,25 +108,19 @@ class FileDownloadHelper {
       final file = File(filePath);
       await file.writeAsString(content, encoding: utf8);
 
-      // Share file using share_plus
-      final result = await Share.shareXFiles(
-        [XFile(filePath, mimeType: mimeType)],
-        subject: 'Calendar Event',
-        text: 'Import this event to your calendar',
-      );
+      // Open file with default calendar app
+      final result = await OpenFilex.open(filePath, type: mimeType);
 
-      // Clean up file after sharing (optional, but good practice)
-      if (result.status == ShareResultStatus.success) {
-        // File shared successfully
-        // You can delete the file after a delay if needed
-        Future.delayed(const Duration(seconds: 5), () {
-          if (file.existsSync()) {
-            file.delete();
-          }
-        });
+      // If opening fails, fallback to share
+      if (result.type != ResultType.done) {
+        await Share.shareXFiles(
+          [XFile(filePath, mimeType: mimeType)],
+          subject: 'Calendar Event',
+          text: 'Import this event to your calendar',
+        );
       }
     } catch (e) {
-      throw Exception('Failed to save and share file: $e');
+      throw Exception('Failed to save and open file: $e');
     }
   }
 }

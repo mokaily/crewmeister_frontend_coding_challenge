@@ -57,6 +57,7 @@ class AbsencesPageMobile extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color(0xffF6F7F8),
       appBar: AppBar(
+        leading: Image.asset("assets/cats/cat_pow.png", color: Colors.yellow, cacheHeight: 26),
         title: Text(AppStrings.absencesTitle),
         actions: [IconButton(icon: const Icon(Icons.filter_list), onPressed: () => showFilterSheet(context))],
       ),
