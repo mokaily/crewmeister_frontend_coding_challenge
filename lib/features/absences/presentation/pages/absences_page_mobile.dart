@@ -87,7 +87,7 @@ class AbsencesPageMobile extends StatelessWidget {
               children: [
                 InfoCardWidget(
                   title: AppStrings.totalAbsences,
-                  subTitle: state.absences.length.toString(),
+                  subTitle: state.totalCount.toString(),
                   icon: Icons.bar_chart,
                 ),
                 Expanded(child: AbsenceList(state: state)),
