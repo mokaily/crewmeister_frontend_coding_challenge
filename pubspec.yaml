@@ -23,6 +23,7 @@ dependencies:
   # File operations for mobile
   path_provider: ^2.1.4
   share_plus: ^10.1.2
+  shimmer: ^3.0.0
 
 dev_dependencies:
   test: ^1.25.4
