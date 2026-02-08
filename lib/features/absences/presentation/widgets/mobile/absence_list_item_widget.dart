@@ -19,7 +19,7 @@ class AbsenceListItem extends StatelessWidget {
     final startDate = formatDateShort(absence.startDate);
     final endDate = formatDateShort(absence.endDate);
     final duration = differenceInDays(absence.startDate, absence.endDate) + 1;
-    final dateRange = '$startDate - $endDate   ($duration days)';
+    final dateRange = '$startDate  -  $endDate';
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -42,13 +42,25 @@ class AbsenceListItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   MemberCircleAvatar(link: member!.image, index: member!.userId),
                   const SizedBox(width: 12),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(member!.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                      Text.rich(
+                        TextSpan(
+                          text: member!.name,
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                          children: [
+                            TextSpan(
+                              text: "\t\t($duration days)",
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ],
+                        ),
+                      ),
                       SizedBox(height: 8),
                       Text(dateRange, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
                     ],
@@ -62,7 +74,7 @@ class AbsenceListItem extends StatelessWidget {
                   SizedBox(height: 8),
                   AbsenceStatusChipWidget(type: absence.status),
                 ],
-              )
+              ),
             ],
           ),
           const SizedBox(height: 12),

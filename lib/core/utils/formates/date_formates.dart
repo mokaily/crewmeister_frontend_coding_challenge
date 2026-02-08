@@ -5,8 +5,8 @@ int differenceInDays(DateTime startDate, DateTime endDate) {
   return endDate.difference(startDate).inDays;
 }
 
-///  Format date to "Oct 12", "Feb 23", etc.
+///  Format date to "2021-01-23", etc.
 String formatDateShort(DateTime date) {
-  final formatter = DateFormat('MMM dd');
+  final formatter = DateFormat('yyyy-MM-dd');
   return formatter.format(date);
 }

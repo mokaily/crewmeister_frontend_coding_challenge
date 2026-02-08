@@ -1,3 +1,5 @@
+import 'package:crewmeister_frontend_coding_challenge/core/utils/themes/themes.dart';
+import 'package:crewmeister_frontend_coding_challenge/features/absences/presentation/pages/absences_page_mobile.dart';
 import 'package:crewmeister_frontend_coding_challenge/service_locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,8 +24,8 @@ class MyApp extends StatelessWidget {
             ..add(const LoadAbsencesEvent()),
       child: MaterialApp(
         title: 'Crewmeister Absences',
-        theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue), useMaterial3: true),
-        home: const AbsencesPage(),
+        theme: Themes.mainTheme,
+        home: const AbsencesPageMobile(),
       ),
     );
   }
