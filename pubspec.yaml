@@ -4,7 +4,8 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.10.8
+  sdk: ">=3.8.1 <4.0.0"
+  flutter: ">=3.22.1"
 
 dependencies:
   flutter:
@@ -17,6 +18,11 @@ dependencies:
   flutter_bloc: ^9.1.1
   #Service Locator
   get_it: ^8.0.3
+  # File download for web
+  universal_html: ^2.2.4
+  # File operations for mobile
+  path_provider: ^2.1.4
+  share_plus: ^10.1.2
 
 dev_dependencies:
   test: ^1.25.4
