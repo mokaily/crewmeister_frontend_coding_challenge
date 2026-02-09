@@ -1,0 +1,16 @@
+{
+  "userId": 1,
+  "crewId": 1,
+  "type": "test",
+  "createdAt": "2020-12-12T18:03:55.000+01:00",
+  "endDate": "2020-12-12T18:03:55.000+01:00",
+  "id": 1,
+  "memberNote": "test",
+  "startDate": "2020-12-12T18:03:55.000+01:00",
+  "admitterNote": "test",
+  "confirmedAt": "2020-12-12T18:03:55.000+01:00",
+  "rejectedAt": "2020-12-12T18:03:55.000+01:00"
+}
+
+
+
