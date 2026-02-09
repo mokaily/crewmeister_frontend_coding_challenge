@@ -19,18 +19,24 @@ class AbsencesBloc extends Bloc<AbsencesEvent, AbsencesState> {
   List<String>? _filterStatuses;
   DateTime? _filterStartDate;
   DateTime? _filterEndDate;
+  String? _filterMemberName;
 
   List<Member> _members = [];
 
-  AbsencesBloc({required this.getAbsencesUseCase, required this.getMembersUseCase})
-    : super(AbsencesInitial()) {
+  AbsencesBloc({
+    required this.getAbsencesUseCase,
+    required this.getMembersUseCase,
+  }) : super(AbsencesInitial()) {
     on<LoadAbsencesEvent>(_onLoadAbsences);
     on<LoadNextPageEvent>(_onLoadNextPage);
     on<ApplyFiltersEvent>(_onApplyFilters);
     on<PreviewFilterCountEvent>(_onPreviewFilterCount);
   }
 
-  Future<void> _onLoadAbsences(LoadAbsencesEvent event, Emitter<AbsencesState> emit) async {
+  Future<void> _onLoadAbsences(
+    LoadAbsencesEvent event,
+    Emitter<AbsencesState> emit,
+  ) async {
     try {
       // Add a 1.5-second delay
       emit(AbsencesLoading());
@@ -50,17 +56,22 @@ class AbsencesBloc extends Bloc<AbsencesEvent, AbsencesState> {
         statuses: _filterStatuses,
         startDate: _filterStartDate,
         endDate: _filterEndDate,
+        memberName: _filterMemberName,
       );
 
       emit(
         AbsencesLoaded(
           absences: result.absences,
           totalCount: result.totalCount,
+          unfilteredCount: result.unfilteredCount,
+          pendingCount: result.pendingCount,
+          activeTodayCount: result.activeTodayCount,
           members: _members,
           filterTypes: _filterTypes,
           filterStatuses: _filterStatuses,
           filterStartDate: _filterStartDate,
           filterEndDate: _filterEndDate,
+          filterMemberName: _filterMemberName,
         ),
       );
     } catch (e) {
@@ -68,7 +79,10 @@ class AbsencesBloc extends Bloc<AbsencesEvent, AbsencesState> {
     }
   }
 
-  Future<void> _onLoadNextPage(LoadNextPageEvent event, Emitter<AbsencesState> emit) async {
+  Future<void> _onLoadNextPage(
+    LoadNextPageEvent event,
+    Emitter<AbsencesState> emit,
+  ) async {
     final currentState = state;
     if (currentState is! AbsencesLoaded) return;
 
@@ -87,12 +101,16 @@ class AbsencesBloc extends Bloc<AbsencesEvent, AbsencesState> {
         statuses: _filterStatuses,
         startDate: _filterStartDate,
         endDate: _filterEndDate,
+        memberName: _filterMemberName,
       );
 
       emit(
         currentState.copyWith(
           absences: [...currentState.absences, ...result.absences],
           totalCount: result.totalCount, // Ensure total count is maintained
+          unfilteredCount: result.unfilteredCount,
+          pendingCount: result.pendingCount,
+          activeTodayCount: result.activeTodayCount,
           isLoadingMore: false,
         ),
       );
@@ -101,15 +119,22 @@ class AbsencesBloc extends Bloc<AbsencesEvent, AbsencesState> {
     }
   }
 
-  Future<void> _onApplyFilters(ApplyFiltersEvent event, Emitter<AbsencesState> emit) async {
+  Future<void> _onApplyFilters(
+    ApplyFiltersEvent event,
+    Emitter<AbsencesState> emit,
+  ) async {
     _filterTypes = event.types;
     _filterStatuses = event.statuses;
     _filterStartDate = event.startDate;
     _filterEndDate = event.endDate;
+    _filterMemberName = event.memberName;
     add(const LoadAbsencesEvent(refresh: true));
   }
 
-  Future<void> _onPreviewFilterCount(PreviewFilterCountEvent event, Emitter<AbsencesState> emit) async {
+  Future<void> _onPreviewFilterCount(
+    PreviewFilterCountEvent event,
+    Emitter<AbsencesState> emit,
+  ) async {
     try {
       final result = await getAbsencesUseCase.execute(
         page: 1,
@@ -118,10 +143,15 @@ class AbsencesBloc extends Bloc<AbsencesEvent, AbsencesState> {
         statuses: event.statuses,
         startDate: event.startDate,
         endDate: event.endDate,
+        memberName: event.memberName,
       );
 
       if (state is AbsencesLoaded) {
-        emit((state as AbsencesLoaded).copyWith(filterPreviewCount: result.totalCount));
+        emit(
+          (state as AbsencesLoaded).copyWith(
+            filterPreviewCount: result.totalCount,
+          ),
+        );
       }
     } catch (e) {
       // Ignore errors for preview

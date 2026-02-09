@@ -4,8 +4,17 @@ import '../repositories/absence_repository.dart';
 class AbsencesResultModel {
   final List<Absence> absences;
   final int totalCount;
+  final int unfilteredCount;
+  final int pendingCount;
+  final int activeTodayCount;
 
-  AbsencesResultModel(this.absences, this.totalCount);
+  AbsencesResultModel(
+    this.absences,
+    this.totalCount,
+    this.unfilteredCount,
+    this.pendingCount,
+    this.activeTodayCount,
+  );
 }
 
 class GetAbsencesUseCase {
@@ -20,6 +29,7 @@ class GetAbsencesUseCase {
     List<String>? statuses,
     DateTime? startDate,
     DateTime? endDate,
+    String? memberName,
   }) async {
     final result = await repository.getAbsences(
       page: page,
@@ -28,7 +38,14 @@ class GetAbsencesUseCase {
       statuses: statuses,
       startDate: startDate,
       endDate: endDate,
+      memberName: memberName,
     );
-    return AbsencesResultModel(result.absences, result.totalCount);
+    return AbsencesResultModel(
+      result.absences,
+      result.totalCount,
+      result.unfilteredCount,
+      result.pendingCount,
+      result.activeTodayCount,
+    );
   }
 }

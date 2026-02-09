@@ -22,6 +22,7 @@ class AbsenceRepositoryImpl implements AbsenceRepository {
     List<String>? statuses,
     DateTime? startDate,
     DateTime? endDate,
+    String? memberName,
   }) async {
     final absenceModels = await dataSource.getAbsences();
 
@@ -70,6 +71,18 @@ class AbsenceRepositoryImpl implements AbsenceRepository {
       }).toList();
     }
 
+    if (memberName != null && memberName.isNotEmpty) {
+      final members = await getMembers();
+      final memberUserIds = members
+          .where((m) => m.name.toLowerCase().contains(memberName.toLowerCase()))
+          .map((m) => m.userId)
+          .toSet();
+
+      absences = absences
+          .where((a) => memberUserIds.contains(a.userId))
+          .toList();
+    }
+
     if (startDate != null && endDate != null) {
       absences = absences.where((a) {
         // Check if absence overlaps with [startDate, endDate]
@@ -98,6 +111,28 @@ class AbsenceRepositoryImpl implements AbsenceRepository {
     }
 
     final totalCount = absences.length;
+    final unfilteredCount = absenceModels.length;
+
+    // Calculate unfiltered counts for Requested and Active Today (Vacation)
+    final pendingCount = absenceModels
+        .where((a) => a.confirmedAt == null && a.rejectedAt == null)
+        .length;
+
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final activeTodayCount = absenceModels.where((a) {
+      if (a.type.toLowerCase() != 'vacation') return false;
+
+      final start = DateTime(
+        a.startDate.year,
+        a.startDate.month,
+        a.startDate.day,
+      );
+      final end = DateTime(a.endDate.year, a.endDate.month, a.endDate.day);
+
+      return (today.isAtSameMomentAs(start) || today.isAfter(start)) &&
+          (today.isAtSameMomentAs(end) || today.isBefore(end));
+    }).length;
 
     // Pagination
     final startIndex = (page - 1) * pageSize;
@@ -110,6 +145,12 @@ class AbsenceRepositoryImpl implements AbsenceRepository {
                 : (startIndex + pageSize),
           );
 
-    return AbsencesRepositoryResult(paginatedAbsences, totalCount);
+    return AbsencesRepositoryResult(
+      paginatedAbsences,
+      totalCount,
+      unfilteredCount,
+      pendingCount,
+      activeTodayCount,
+    );
   }
 }
