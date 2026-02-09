@@ -13,7 +13,6 @@ dependencies:
 
   cupertino_icons: ^1.0.8
   intl: ^0.20.2
-  provider: ^6.1.5+1
   equatable: ^2.0.8
   flutter_bloc: ^9.1.1
   #Service Locator
@@ -30,6 +29,7 @@ dev_dependencies:
   test: ^1.25.4           # for test purpose
   mockito: ^5.6.3         # to mock repos and usecases for test purpose
   build_runner: ^2.4.8
+  bloc_test: ^10.0.0      # for block testing
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: "^0.14.4"
