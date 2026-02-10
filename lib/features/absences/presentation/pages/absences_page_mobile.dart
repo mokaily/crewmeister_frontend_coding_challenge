@@ -1,4 +1,5 @@
 import 'package:crewmeister_frontend_coding_challenge/core/locatlizations/app_strings.dart';
+import 'package:crewmeister_frontend_coding_challenge/features/absences/presentation/widgets/header_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -64,7 +65,7 @@ class AbsencesPageMobile extends StatelessWidget {
       body: BlocBuilder<AbsencesBloc, AbsencesState>(
         builder: (BuildContext context, AbsencesState state) {
           if (state is AbsencesLoading) {
-            return AbsenceLoading();
+            return AbsenceMobileLoading();
           }
 
           if (state is AbsencesError) {
@@ -85,9 +86,10 @@ class AbsencesPageMobile extends StatelessWidget {
             }
             return Column(
               children: [
+                const HeaderWidget(),
                 InfoCardWidget(
                   title: AppStrings.totalAbsences,
-                  subTitle: state.totalCount.toString(),
+                  subTitle: state.unfilteredCount.toString(),
                   icon: Icons.bar_chart,
                 ),
                 Expanded(child: AbsenceList(state: state)),
@@ -95,7 +97,7 @@ class AbsencesPageMobile extends StatelessWidget {
             );
           }
 
-          return AbsenceLoading();
+          return AbsenceMobileLoading();
         },
       ),
     );

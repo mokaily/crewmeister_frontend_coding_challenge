@@ -8,12 +8,21 @@ class AppStrings {
 
   // Absences Page
   static const String absencesTitle = 'Absences';
+  static const String absencesRecords = 'Absences Records';
   static const String totalAbsences = 'Total Absences';
   static const String noAbsencesFound = 'No Absences found';
-  static const String noAbsencesFoundDesc = "Nothing in the Box. We couldn't find what\n you are searching for. Try a different\n keyword?";
+  static const String noAbsencesFoundDesc =
+      "Nothing in the Box. We couldn't find what\n you are searching for. Try a different\n keyword?";
   static const String absencesError = 'A Small Issue';
-  static const String absencesErrorDesc = "Oops! We're tangled. The results you are\n looking for doesn't exist. Our friend here\n got stuck in the yarn.";
+  static const String absencesErrorDesc =
+      "Oops! We're tangled. The results you are\n looking for doesn't exist. Our friend here\n got stuck in the yarn.";
   static const String loadMore = 'Load More';
+  static const String name = 'Name';
+  static const String member = 'Member';
+  static const String type = 'Type';
+  static const String period = 'Period';
+  static const String status = 'Status';
+  static const String actions = 'Actions';
 
   // Filter
   static const String filterTitle = 'Filter Absences';
@@ -38,7 +47,6 @@ class AppStrings {
   // Notes
   static const String memberNote = '"Member Note';
   static const String admitterNote = '"Admitter Note';
-
 
   // Helper methods for dynamic strings
   static String totalAbsencesCount(int count) => 'Total Absences: $count';

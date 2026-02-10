@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:crewmeister_frontend_coding_challenge/core/locatlizations/app_strings.dart';
 import 'package:crewmeister_frontend_coding_challenge/features/absences/presentation/bloc/absences_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../form_search_field_widget.dart';
 import 'filter_date_button_widget.dart';
 import 'filter_select_button_widget.dart';
 
@@ -28,6 +31,8 @@ class _FilterBottomSheetWidgetState extends State<FilterBottomSheetWidget> {
   late List<String> _selectedStatuses;
   DateTime? _startDate;
   DateTime? _endDate;
+  final TextEditingController _searchController = TextEditingController();
+  Timer? _debounce;
 
   @override
   void initState() {
@@ -47,8 +52,16 @@ class _FilterBottomSheetWidgetState extends State<FilterBottomSheetWidget> {
         statuses: _selectedStatuses,
         startDate: _startDate,
         endDate: _endDate,
+        memberName: _searchController.text,
       ),
     );
+  }
+
+  void _onSearchChanged(String query) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      _updatePreview();
+    });
   }
 
   void closeBottomSheet(BuildContext context) {
@@ -104,6 +117,12 @@ class _FilterBottomSheetWidgetState extends State<FilterBottomSheetWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Search Member
+                  _sectionTitle("Search Member"),
+                  const SizedBox(height: 8),
+                  FormSearchFieldWidget(searchController: _searchController, onAction: _onSearchChanged),
+                  const SizedBox(height: 24),
+
                   /// Absence Type
                   _sectionTitle(AppStrings.absenceType),
                   const SizedBox(height: 18),
@@ -215,6 +234,7 @@ class _FilterBottomSheetWidgetState extends State<FilterBottomSheetWidget> {
                               statuses: _selectedStatuses,
                               startDate: _startDate,
                               endDate: _endDate,
+                              memberName: _searchController.text,
                             ),
                           );
                           Navigator.pop(context);

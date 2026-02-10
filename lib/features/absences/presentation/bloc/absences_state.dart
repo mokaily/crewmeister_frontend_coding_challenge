@@ -14,6 +14,10 @@ class AbsencesLoading extends AbsencesState {}
 class AbsencesLoaded extends AbsencesState {
   final List<Absence> absences;
   final int totalCount;
+  final int? unfilteredCount;
+  final int pendingCount;
+  final int activeTodayCount;
+  final int currentPage;
   final bool isLoadingMore;
   final List<Member> members;
 
@@ -22,6 +26,7 @@ class AbsencesLoaded extends AbsencesState {
   final List<String>? filterStatuses;
   final DateTime? filterStartDate;
   final DateTime? filterEndDate;
+  final String? filterMemberName;
 
   // Preview
   final int? filterPreviewCount;
@@ -29,12 +34,17 @@ class AbsencesLoaded extends AbsencesState {
   const AbsencesLoaded({
     required this.absences,
     required this.totalCount,
+    this.unfilteredCount,
+    this.pendingCount = 0,
+    this.activeTodayCount = 0,
+    this.currentPage = 1,
     this.isLoadingMore = false,
     required this.members,
     this.filterTypes,
     this.filterStatuses,
     this.filterStartDate,
     this.filterEndDate,
+    this.filterMemberName,
     this.filterPreviewCount,
   });
 
@@ -50,24 +60,34 @@ class AbsencesLoaded extends AbsencesState {
   AbsencesLoaded copyWith({
     List<Absence>? absences,
     int? totalCount,
+    int? unfilteredCount,
+    int? pendingCount,
+    int? activeTodayCount,
+    int? currentPage,
     bool? isLoadingMore,
     List<Member>? members,
     List<String>? filterTypes,
     List<String>? filterStatuses,
     DateTime? filterStartDate,
     DateTime? filterEndDate,
+    String? filterMemberName,
     int? filterPreviewCount,
     bool clearPreviewCount = false,
   }) {
     return AbsencesLoaded(
       absences: absences ?? this.absences,
       totalCount: totalCount ?? this.totalCount,
+      unfilteredCount: unfilteredCount ?? this.unfilteredCount,
+      pendingCount: pendingCount ?? this.pendingCount,
+      activeTodayCount: activeTodayCount ?? this.activeTodayCount,
+      currentPage: currentPage ?? this.currentPage,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
       members: members ?? this.members,
       filterTypes: filterTypes ?? this.filterTypes,
       filterStatuses: filterStatuses ?? this.filterStatuses,
       filterStartDate: filterStartDate ?? this.filterStartDate,
       filterEndDate: filterEndDate ?? this.filterEndDate,
+      filterMemberName: filterMemberName ?? this.filterMemberName,
       filterPreviewCount: clearPreviewCount
           ? null
           : (filterPreviewCount ?? this.filterPreviewCount),
@@ -78,12 +98,17 @@ class AbsencesLoaded extends AbsencesState {
   List<Object?> get props => [
     absences,
     totalCount,
+    unfilteredCount,
+    pendingCount,
+    activeTodayCount,
+    currentPage,
     isLoadingMore,
     members,
     filterTypes,
     filterStatuses,
     filterStartDate,
     filterEndDate,
+    filterMemberName,
     filterPreviewCount,
   ];
 }
