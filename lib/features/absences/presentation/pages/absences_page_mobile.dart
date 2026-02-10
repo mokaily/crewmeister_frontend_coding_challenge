@@ -1,4 +1,5 @@
 import 'package:crewmeister_frontend_coding_challenge/core/locatlizations/app_strings.dart';
+import 'package:crewmeister_frontend_coding_challenge/features/absences/presentation/widgets/header_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -85,6 +86,7 @@ class AbsencesPageMobile extends StatelessWidget {
             }
             return Column(
               children: [
+                const HeaderWidget(),
                 InfoCardWidget(
                   title: AppStrings.totalAbsences,
                   subTitle: state.unfilteredCount.toString(),
