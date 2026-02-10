@@ -8,13 +8,13 @@ class AbsencesRepositoryResult {
   final int pendingCount;
   final int activeTodayCount;
 
-  AbsencesRepositoryResult(
-    this.absences,
-    this.totalCount,
-    this.unfilteredCount,
-    this.pendingCount,
-    this.activeTodayCount,
-  );
+  AbsencesRepositoryResult({
+    required this.absences,
+    required this.totalCount,
+    required this.unfilteredCount,
+    required this.pendingCount,
+    required this.activeTodayCount,
+  });
 }
 
 abstract class AbsenceRepository {

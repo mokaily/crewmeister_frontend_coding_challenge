@@ -146,11 +146,11 @@ class AbsenceRepositoryImpl implements AbsenceRepository {
           );
 
     return AbsencesRepositoryResult(
-      paginatedAbsences,
-      totalCount,
-      unfilteredCount,
-      pendingCount,
-      activeTodayCount,
+      absences: paginatedAbsences,
+      totalCount: totalCount,
+      unfilteredCount: unfilteredCount,
+      pendingCount: pendingCount,
+      activeTodayCount: activeTodayCount,
     );
   }
 }

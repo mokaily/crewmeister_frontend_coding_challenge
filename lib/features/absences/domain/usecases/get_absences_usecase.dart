@@ -8,13 +8,13 @@ class AbsencesResultModel {
   final int pendingCount;
   final int activeTodayCount;
 
-  AbsencesResultModel(
-    this.absences,
-    this.totalCount,
-    this.unfilteredCount,
-    this.pendingCount,
-    this.activeTodayCount,
-  );
+  AbsencesResultModel({
+    required this.absences,
+    required this.totalCount,
+    required this.unfilteredCount,
+    required this.pendingCount,
+    required this.activeTodayCount,
+  });
 }
 
 class GetAbsencesUseCase {
@@ -41,11 +41,11 @@ class GetAbsencesUseCase {
       memberName: memberName,
     );
     return AbsencesResultModel(
-      result.absences,
-      result.totalCount,
-      result.unfilteredCount,
-      result.pendingCount,
-      result.activeTodayCount,
+      absences: result.absences,
+      totalCount: result.totalCount,
+      unfilteredCount: result.unfilteredCount,
+      pendingCount: result.pendingCount,
+      activeTodayCount: result.activeTodayCount,
     );
   }
 }
