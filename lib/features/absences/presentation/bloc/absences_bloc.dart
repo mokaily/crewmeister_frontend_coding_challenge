@@ -42,7 +42,7 @@ class AbsencesBloc extends Bloc<AbsencesEvent, AbsencesState> {
       emit(AbsencesLoading());
       await Future.delayed(const Duration(milliseconds: 1500));
 
-      _currentPage = 1;
+      _currentPage = event.page;
 
       // Load members first (only once)
       if (_members.isEmpty) {
@@ -66,6 +66,7 @@ class AbsencesBloc extends Bloc<AbsencesEvent, AbsencesState> {
           unfilteredCount: result.unfilteredCount,
           pendingCount: result.pendingCount,
           activeTodayCount: result.activeTodayCount,
+          currentPage: _currentPage,
           members: _members,
           filterTypes: _filterTypes,
           filterStatuses: _filterStatuses,
@@ -111,6 +112,7 @@ class AbsencesBloc extends Bloc<AbsencesEvent, AbsencesState> {
           unfilteredCount: result.unfilteredCount,
           pendingCount: result.pendingCount,
           activeTodayCount: result.activeTodayCount,
+          currentPage: _currentPage,
           isLoadingMore: false,
         ),
       );

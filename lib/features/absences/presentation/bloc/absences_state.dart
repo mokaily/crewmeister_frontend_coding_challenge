@@ -17,6 +17,7 @@ class AbsencesLoaded extends AbsencesState {
   final int? unfilteredCount;
   final int pendingCount;
   final int activeTodayCount;
+  final int currentPage;
   final bool isLoadingMore;
   final List<Member> members;
 
@@ -36,6 +37,7 @@ class AbsencesLoaded extends AbsencesState {
     this.unfilteredCount,
     this.pendingCount = 0,
     this.activeTodayCount = 0,
+    this.currentPage = 1,
     this.isLoadingMore = false,
     required this.members,
     this.filterTypes,
@@ -61,6 +63,7 @@ class AbsencesLoaded extends AbsencesState {
     int? unfilteredCount,
     int? pendingCount,
     int? activeTodayCount,
+    int? currentPage,
     bool? isLoadingMore,
     List<Member>? members,
     List<String>? filterTypes,
@@ -77,6 +80,7 @@ class AbsencesLoaded extends AbsencesState {
       unfilteredCount: unfilteredCount ?? this.unfilteredCount,
       pendingCount: pendingCount ?? this.pendingCount,
       activeTodayCount: activeTodayCount ?? this.activeTodayCount,
+      currentPage: currentPage ?? this.currentPage,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
       members: members ?? this.members,
       filterTypes: filterTypes ?? this.filterTypes,
@@ -97,6 +101,7 @@ class AbsencesLoaded extends AbsencesState {
     unfilteredCount,
     pendingCount,
     activeTodayCount,
+    currentPage,
     isLoadingMore,
     members,
     filterTypes,

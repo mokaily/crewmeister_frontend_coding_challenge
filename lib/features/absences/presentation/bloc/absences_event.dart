@@ -9,7 +9,11 @@ abstract class AbsencesEvent extends Equatable {
 
 class LoadAbsencesEvent extends AbsencesEvent {
   final bool refresh;
-  const LoadAbsencesEvent({this.refresh = false});
+  final int page;
+  const LoadAbsencesEvent({this.refresh = false, this.page = 1});
+
+  @override
+  List<Object?> get props => [refresh, page];
 }
 
 class LoadNextPageEvent extends AbsencesEvent {}

@@ -9,6 +9,6 @@ class MemberCircleAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     String linkAddress = '$link?lock=$index';
 
-    return CircleAvatar(backgroundImage: NetworkImage(linkAddress), radius: 24);
+    return CircleAvatar(backgroundImage: NetworkImage(linkAddress), radius: 20);
   }
 }
