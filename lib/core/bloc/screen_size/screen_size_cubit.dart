@@ -22,7 +22,7 @@ class ScreenSizeCubit extends Cubit<ScreenSizeState> {
   ScreenSizeCubit() : super(const ScreenSizeInitial(isMobile: true));
 
   void checkScreenSize(double width) {
-    bool isMobile = width <= 750;
+    bool isMobile = width <= 1000;
     if (state.isMobile != isMobile) {
       emit(ScreenSizeChanged(isMobile: isMobile));
     }

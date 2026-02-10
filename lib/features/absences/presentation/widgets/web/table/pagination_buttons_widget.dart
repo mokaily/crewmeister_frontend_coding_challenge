@@ -2,7 +2,7 @@ import 'package:crewmeister_frontend_coding_challenge/features/absences/presenta
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../bloc/absences_bloc.dart';
+import '../../../bloc/absences_bloc.dart';
 
 class PaginationButtonsWidget extends StatelessWidget {
   final dynamic state;

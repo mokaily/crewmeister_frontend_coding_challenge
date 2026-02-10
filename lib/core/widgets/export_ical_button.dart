@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../features/absences/domain/entities/absence.dart';
 import '../../features/absences/domain/entities/member.dart';
+import '../bloc/screen_size/screen_size_cubit.dart';
 import '../utils/ical_exporter.dart';
 import '../utils/file_download_helper.dart';
 
@@ -8,11 +10,7 @@ class ExportICalButton extends StatelessWidget {
   final Absence absence;
   final Member? member;
 
-  const ExportICalButton({
-    super.key,
-    required this.absence,
-    required this.member,
-  });
+  const ExportICalButton({super.key, required this.absence, required this.member});
 
   Future<void> _exportToICal(BuildContext context) async {
     try {
@@ -51,13 +49,24 @@ class ExportICalButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton.icon(
-      onPressed: () => _exportToICal(context),
-      icon: const Icon(Icons.calendar_month, size: 14, color: Colors.blue),
-      label: const Text('ADD TO CALENDER', style: TextStyle(color: Colors.blue, fontSize: 12)),
-      style: OutlinedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      ),
+    return BlocBuilder<ScreenSizeCubit, ScreenSizeState>(
+      builder: (context, state) {
+        if (!state.isMobile) {
+          return IconButton(
+            onPressed: () {
+              _exportToICal(context);
+            },
+            icon: Icon(Icons.download, color: Colors.grey),
+          );
+        } else {
+          return TextButton.icon(
+            onPressed: () => _exportToICal(context),
+            icon: const Icon(Icons.calendar_month, size: 14, color: Colors.blue),
+            label: const Text('ADD TO CALENDER', style: TextStyle(color: Colors.blue, fontSize: 12)),
+            style: OutlinedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8)),
+          );
+        }
+      },
     );
   }
 }

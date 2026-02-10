@@ -1,8 +1,9 @@
 import 'package:crewmeister_frontend_coding_challenge/core/utils/formates/date_formates.dart';
 import 'package:crewmeister_frontend_coding_challenge/core/widgets/chips/absence_status_chip_widget.dart';
 import 'package:crewmeister_frontend_coding_challenge/core/widgets/chips/absence_type_chip_widget.dart';
+import 'package:crewmeister_frontend_coding_challenge/core/widgets/export_ical_button.dart';
 import 'package:crewmeister_frontend_coding_challenge/core/widgets/notes_widget.dart';
-import 'package:crewmeister_frontend_coding_challenge/features/absences/presentation/widgets/web/pagination_buttons_widget.dart';
+import 'package:crewmeister_frontend_coding_challenge/features/absences/presentation/widgets/web/table/pagination_buttons_widget.dart';
 import 'package:flutter/material.dart';
 import '../../../../../../core/widgets/member_circle_avatar.dart';
 import '../../../../domain/entities/absence.dart';
@@ -171,10 +172,11 @@ class AbsenceTableWidget extends StatelessWidget {
             flex: 1,
             child: Align(
               alignment: Alignment.centerRight,
-              child: IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.more_horiz, color: Colors.grey),
-              ),
+              child: ExportICalButton(absence: absence, member: member),
+              // child: IconButton(
+              //   onPressed: () {},
+              //   icon: Icon(Icons.download, color: Colors.grey),
+              // ),
             ),
           ),
         ],
