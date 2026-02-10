@@ -3,8 +3,8 @@ import 'package:crewmeister_frontend_coding_challenge/core/widgets/info_card_wid
 import 'package:crewmeister_frontend_coding_challenge/core/widgets/shimmer_widgets.dart';
 import 'package:flutter/material.dart';
 
-class AbsenceLoading extends StatelessWidget {
-  const AbsenceLoading({super.key});
+class AbsenceMobileLoading extends StatelessWidget {
+  const AbsenceMobileLoading({super.key});
 
   @override
   Widget build(BuildContext context) {

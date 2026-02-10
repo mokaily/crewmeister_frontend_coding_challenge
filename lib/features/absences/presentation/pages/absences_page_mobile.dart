@@ -64,7 +64,7 @@ class AbsencesPageMobile extends StatelessWidget {
       body: BlocBuilder<AbsencesBloc, AbsencesState>(
         builder: (BuildContext context, AbsencesState state) {
           if (state is AbsencesLoading) {
-            return AbsenceLoading();
+            return AbsenceMobileLoading();
           }
 
           if (state is AbsencesError) {
@@ -95,7 +95,7 @@ class AbsencesPageMobile extends StatelessWidget {
             );
           }
 
-          return AbsenceLoading();
+          return AbsenceMobileLoading();
         },
       ),
     );
