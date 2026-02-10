@@ -8,6 +8,7 @@ The application is built with **Flutter**, follows **Clean Architecture principl
 ---
 
 ## Screenshots
+![absence_manager](https://github.com/user-attachments/assets/ac232122-02db-4921-956c-5faa8b1dbe02)
 
 
 
