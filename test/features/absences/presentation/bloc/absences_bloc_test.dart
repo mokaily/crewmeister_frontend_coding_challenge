@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:crewmeister_frontend_coding_challenge/features/absences/domain/entities/absence.dart';
 import 'package:crewmeister_frontend_coding_challenge/features/absences/domain/repositories/absence_repository.dart';
 import 'package:crewmeister_frontend_coding_challenge/features/absences/domain/usecases/get_absences_usecase.dart';
 import 'package:crewmeister_frontend_coding_challenge/features/absences/domain/usecases/get_members_usecase.dart';
@@ -19,7 +18,6 @@ void main() {
 
   final testMembers = TestConstants.tMemberList;
   final testAbsences = TestConstants.tAbsenceModels;
-
 
   setUp(() {
     mockGetAbsencesUseCase = MockGetAbsencesUseCase();
@@ -56,7 +54,7 @@ void main() {
               startDate: anyNamed('startDate'),
               endDate: anyNamed('endDate'),
             ),
-          ).thenAnswer((_) async => AbsencesResultModel(testAbsences, 2));
+          ).thenAnswer((_) async => TestConstants.tAbsencesResultModel);
 
           final bloc = AbsencesBloc(
             getAbsencesUseCase: mockGetAbsencesUseCase,
@@ -140,30 +138,25 @@ void main() {
 
     group('LoadNextPageEvent', () {
       test('loads next page and appends absences to existing list', () async {
-        final moreAbsences = [
-          Absence(
-            id: 3,
-            userId: 100,
-            crewId: 1,
-            type: 'vacation',
-            startDate: DateTime(2024, 3, 1),
-            endDate: DateTime(2024, 3, 5),
-            memberNote: 'Spring break',
-            createdAt: DateTime(2024, 2, 1),
-          ),
-        ];
-
         when(mockRepository.getMembers()).thenAnswer((_) async => testMembers);
         when(
           mockGetAbsencesUseCase.execute(
-            page: 1,
+            page: anyNamed('page'),
             pageSize: anyNamed('pageSize'),
             types: anyNamed('types'),
             statuses: anyNamed('statuses'),
             startDate: anyNamed('startDate'),
             endDate: anyNamed('endDate'),
           ),
-        ).thenAnswer((_) async => AbsencesResultModel(testAbsences, 3));
+        ).thenAnswer(
+          (_) async => AbsencesResultModel(
+            absences: [testAbsences.first, testAbsences.last],
+            totalCount: 4,
+            unfilteredCount: 0,
+            pendingCount: 0,
+            activeTodayCount: 0,
+          ),
+        );
 
         when(
           mockGetAbsencesUseCase.execute(
@@ -174,7 +167,7 @@ void main() {
             startDate: anyNamed('startDate'),
             endDate: anyNamed('endDate'),
           ),
-        ).thenAnswer((_) async => AbsencesResultModel(moreAbsences, 3));
+        ).thenAnswer((_) async => TestConstants.tAbsencesResultModel);
 
         final bloc = AbsencesBloc(
           getAbsencesUseCase: mockGetAbsencesUseCase,
@@ -201,7 +194,7 @@ void main() {
               true,
             ),
             isA<AbsencesLoaded>()
-                .having((s) => s.absences.length, 'absences after load', 3)
+                .having((s) => s.absences.length, 'absences after load', 4)
                 .having((s) => s.isLoadingMore, 'isLoadingMore', false),
           ]),
         );
@@ -221,7 +214,7 @@ void main() {
             startDate: anyNamed('startDate'),
             endDate: anyNamed('endDate'),
           ),
-        ).thenAnswer((_) async => AbsencesResultModel(testAbsences, 2));
+        ).thenAnswer((_) async => TestConstants.tAbsencesResultModel);
 
         final bloc = AbsencesBloc(
           getAbsencesUseCase: mockGetAbsencesUseCase,
@@ -231,7 +224,7 @@ void main() {
         bloc.add(const LoadAbsencesEvent());
         await Future.delayed(const Duration(milliseconds: 2000));
 
-        final statesBefore = bloc.stream.toList();
+        // final statesBefore = bloc.stream.toList();
         bloc.add(LoadNextPageEvent());
         await Future.delayed(const Duration(milliseconds: 500));
 
@@ -253,7 +246,7 @@ void main() {
 
     group('ApplyFiltersEvent', () {
       test('applies filters and reloads absences', () async {
-        final filteredAbsences = [testAbsences.first];
+        // final filteredAbsences = [testAbsences.first];
 
         when(mockRepository.getMembers()).thenAnswer((_) async => testMembers);
         when(
@@ -265,7 +258,7 @@ void main() {
             startDate: anyNamed('startDate'),
             endDate: anyNamed('endDate'),
           ),
-        ).thenAnswer((_) async => AbsencesResultModel(filteredAbsences, 1));
+        ).thenAnswer((_) async => TestConstants.tAbsencesResultModel);
 
         final bloc = AbsencesBloc(
           getAbsencesUseCase: mockGetAbsencesUseCase,
@@ -283,7 +276,7 @@ void main() {
           containsAllInOrder([
             isA<AbsencesLoading>(),
             isA<AbsencesLoaded>()
-                .having((s) => s.absences.length, 'absences length', 1)
+                .having((s) => s.absences.length, 'absences length', 2)
                 .having((s) => s.filterTypes, 'filterTypes', ['vacation']),
           ]),
         );
@@ -317,7 +310,7 @@ void main() {
             startDate: startDate,
             endDate: endDate,
           ),
-        ).thenAnswer((_) async => AbsencesResultModel([testAbsences.first], 1));
+        ).thenAnswer((_) async => TestConstants.tAbsencesResultModel);
 
         final bloc = AbsencesBloc(
           getAbsencesUseCase: mockGetAbsencesUseCase,
@@ -354,7 +347,7 @@ void main() {
             startDate: anyNamed('startDate'),
             endDate: anyNamed('endDate'),
           ),
-        ).thenAnswer((_) async => AbsencesResultModel(testAbsences, 2));
+        ).thenAnswer((_) async => TestConstants.tAbsencesResultModel);
 
         when(
           mockGetAbsencesUseCase.execute(
@@ -365,7 +358,7 @@ void main() {
             startDate: anyNamed('startDate'),
             endDate: anyNamed('endDate'),
           ),
-        ).thenAnswer((_) async => AbsencesResultModel([], 5));
+        ).thenAnswer((_) async => TestConstants.tAbsencesResultModel);
 
         final bloc = AbsencesBloc(
           getAbsencesUseCase: mockGetAbsencesUseCase,
@@ -381,7 +374,7 @@ void main() {
         await Future.delayed(const Duration(milliseconds: 500));
 
         final loadedStates = states.whereType<AbsencesLoaded>().toList();
-        expect(loadedStates.last.filterPreviewCount, equals(5));
+        expect(loadedStates.last.filterPreviewCount, equals(2));
 
         verify(
           mockGetAbsencesUseCase.execute(
@@ -409,7 +402,7 @@ void main() {
             startDate: anyNamed('startDate'),
             endDate: anyNamed('endDate'),
           ),
-        ).thenAnswer((_) async => AbsencesResultModel(testAbsences, 2));
+        ).thenAnswer((_) async => TestConstants.tAbsencesResultModel);
 
         when(
           mockGetAbsencesUseCase.execute(

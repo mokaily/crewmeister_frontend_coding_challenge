@@ -76,6 +76,7 @@ class MockGetAbsencesUseCase extends _i1.Mock
     List<String>? statuses,
     DateTime? startDate,
     DateTime? endDate,
+    String? memberName,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#execute, [], {
@@ -85,6 +86,7 @@ class MockGetAbsencesUseCase extends _i1.Mock
               #statuses: statuses,
               #startDate: startDate,
               #endDate: endDate,
+              #memberName: memberName,
             }),
             returnValue: _i4.Future<_i3.AbsencesResultModel>.value(
               _FakeAbsencesResultModel_1(
@@ -96,6 +98,7 @@ class MockGetAbsencesUseCase extends _i1.Mock
                   #statuses: statuses,
                   #startDate: startDate,
                   #endDate: endDate,
+                  #memberName: memberName,
                 }),
               ),
             ),
@@ -147,6 +150,7 @@ class MockAbsenceRepository extends _i1.Mock implements _i2.AbsenceRepository {
     List<String>? statuses,
     DateTime? startDate,
     DateTime? endDate,
+    String? memberName,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#getAbsences, [], {
@@ -156,6 +160,7 @@ class MockAbsenceRepository extends _i1.Mock implements _i2.AbsenceRepository {
               #statuses: statuses,
               #startDate: startDate,
               #endDate: endDate,
+              #memberName: memberName,
             }),
             returnValue: _i4.Future<_i2.AbsencesRepositoryResult>.value(
               _FakeAbsencesRepositoryResult_2(
@@ -167,6 +172,7 @@ class MockAbsenceRepository extends _i1.Mock implements _i2.AbsenceRepository {
                   #statuses: statuses,
                   #startDate: startDate,
                   #endDate: endDate,
+                  #memberName: memberName,
                 }),
               ),
             ),

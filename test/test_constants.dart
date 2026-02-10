@@ -23,10 +23,13 @@ class TestConstants {
 
   static List<Member> tMemberList = [tMember, tMember];
 
-  static AbsencesRepositoryResult tAbsencesRepositoryResult = AbsencesRepositoryResult([
-    tAbsence,
-    tAbsence,
-  ], 2);
+  static AbsencesRepositoryResult tAbsencesRepositoryResult = AbsencesRepositoryResult(
+    totalCount: 2,
+    absences: [tAbsence, tAbsence],
+    activeTodayCount: 0,
+    pendingCount: 0,
+    unfilteredCount: 0,
+  );
 
   static Absence tAbsence = Absence(
     startDate: DateTime.parse("2020-12-12T18:03:55.000+01:00"),
@@ -39,7 +42,13 @@ class TestConstants {
     createdAt: DateTime.parse("2020-12-12T18:03:55.000+01:00"),
   );
   //models
-  static AbsencesResultModel tAbsencesResultModel = AbsencesResultModel([tAbsence, tAbsence], 2);
+  static AbsencesResultModel tAbsencesResultModel = AbsencesResultModel(
+    totalCount: 2,
+    absences: [tAbsence, tAbsence],
+    activeTodayCount: 0,
+    pendingCount: 0,
+    unfilteredCount: 0,
+  );
 
   static MemberModel tMemberModel = const MemberModel(
     crewId: 1,
